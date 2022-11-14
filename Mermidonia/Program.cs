@@ -18,6 +18,7 @@ namespace Mermidonia
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
-                .UseReactiveUI();
+                .UseReactiveUI()
+        ;
     }
 }

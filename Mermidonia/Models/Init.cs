@@ -1,27 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
-using DynamicData.Binding;
-using ReactiveUI;
+using System.Threading.Tasks;
 
-namespace Mermidonia.Views
+namespace Mermidonia.Models;
+
+public class Init
 {
-    public partial class MainWindow : Window, IActivatableView
+    public async Task<IEnumerable<CommitItem>> Hydrate()
     {
-        public MainWindow()
-    {
-        InitializeComponent();
-    }
-
-    private async void OnClick(object? sender, RoutedEventArgs e)
-    {
-
         var workingDirectory = "/Users/alex/repositories/bitrix/modules";
-
+        var result = new List<CommitItem>();
         using (var proc = new Process())
         {
             proc.StartInfo.FileName = "hg";
@@ -33,19 +22,27 @@ namespace Mermidonia.Views
             var readResult = (await proc.StandardOutput.ReadToEndAsync()).Trim('\n');
             
             var arrResult = readResult.Split('\n');
-            var i = 0;
             foreach (var author in arrResult)
             {
-                Console.WriteLine($"author {i}: {author}");
-               i++;
+                Console.WriteLine(author);
+                result.Add(new CommitItem(author));
             }
 
             await proc.WaitForExitAsync();
         }
-    }
 
-   
+        return result;
     }
-    
-    
+        
+   
+}
+
+public class CommitItem
+{
+    public string Author { get; set; }
+
+    public CommitItem(String author)
+    {
+        Author = author;
+    }
 }

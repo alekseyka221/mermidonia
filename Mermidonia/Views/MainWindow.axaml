@@ -11,7 +11,26 @@
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    
+    <StackPanel>
+        <TextBlock Text="{Binding Greeting}"></TextBlock>
+        <ProgressBar
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            IsVisible="{Binding InitializationNotifier.IsNotCompleted}"
+            IsIndeterminate="True"/>
+        <ListBox
+            IsVisible="{Binding InitializationNotifier.IsCompleted}"
+            Items="{Binding MyItems}"
+            >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="Red" CornerRadius="4" Padding="4">
+                        <TextBlock Text="{Binding Author}"/>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
 
 </Window>
